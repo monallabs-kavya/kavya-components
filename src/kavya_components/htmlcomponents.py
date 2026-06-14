@@ -55,13 +55,13 @@ from py_tailwind_utils import (primary
 # from ofjustpy.HC_wrappers import Halign
 import itertools
 
-# def EnumSelector(key, enumtype, **kwargs):
-#     enumselect = AC.Select(
-#         key=key,
-#         childs=[PC.Option(text=str(_.value), value=str(_.value)) for _ in enumtype],
-#         **kwargs,
-#     )
-#     return enumselect
+def EnumSelector(key, enumtype, **kwargs):
+    enumselect = kv.AD.Select(
+        key=key,
+        childs=[kv.PC.Option(text=str(_.value), value=str(_.value)) for _ in enumtype],
+        **kwargs,
+    )
+    return enumselect
 
 
 

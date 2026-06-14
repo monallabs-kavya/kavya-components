@@ -1,6 +1,7 @@
 from kavya_components import LinearSelector
 
 async def on_click(*args):
+    print("on_click executed with args = ", args)
     pass
 
 linear_selector = LinearSelector(key="linear_selector",

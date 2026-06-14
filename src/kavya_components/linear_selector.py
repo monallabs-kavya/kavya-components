@@ -78,7 +78,7 @@ async def on_circle_click(dbref,
 
 class SafelistMixin:
     svelte_twtags_safelist = [mr/st/8]
-    svelte_extra_classes_safelist = []
+    svelte_extra_classes_safelist = ""
     def __init__(self, *args, **kwargs):
         pass
     pass
@@ -101,8 +101,7 @@ def event_prehook(on_event_callback):
 
 class _LinearSelector(LinearSelectorBase):
     svelte_twtags_safelist = [space/x/2, outline / offset / 2, outline / black / 0, outline / 2, outlinesty.double, opacity/25]
-    svelte_extra_classes_safelist = [
-        ]
+    svelte_extra_classes_safelist = ""
     def __init__(self, *args, num_iter=range(1, 5), **kwargs):
         key = kwargs.get("key")
         async def on_click(*args,  slider_core=self, **kwargs):

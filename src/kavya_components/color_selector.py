@@ -59,7 +59,6 @@ class MutableShell_CSMixin:
 
         for shade_btn in scs.components:
             shid = int(shade_btn.value)
-            print("update color with gradient = ", shid, color_gradient[shid], " ", colortag)
             new_color = bg / colortag /             color_gradient[shid]
             shade_btn.add_twsty_tags(new_color)
 
@@ -73,10 +72,8 @@ async def on_mcs_change(dbref, msg, wp, request, cs_core=None):
     the select drop down
     """
     target_of = wp.session_manager.target_of
-    print ("==>Main Selector change called")
     cs_shell = target_of(cs_core.id)
     cs_shell.mcs_value = msg["value"]
-    print("color shade selector value = ", cs_shell.mcs_value )
     cs_shell.component_clicked = "mcs"
     
     pass
@@ -111,15 +108,15 @@ def CS_event_prehook(on_event_callback):
     return hook
 
 ColorSelectorBase = MutableDiv_StubWrappedTypeGen("ColorSelectorBase",
-                                                            DivMixin,
-                                                            mutableShell_addonMixins = [MutableShell_CSMixin],
-                                                            stytags_getter_func=stytags_getter_func
-                                                            )
+                                                  DivMixin,
+                                                  mutableShell_addonMixins = [MutableShell_CSMixin],
+                                                  stytags_getter_func=stytags_getter_func
+                                                  )
 
 class _ColorSelector(ColorSelectorBase):
     svelte_twtags_safelist = [bg/cn/shid  for cn in color_shades for shid in [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950]]
 
-    svelte_extra_classes_safelist = []
+    svelte_extra_classes_safelist = ""
     def __init__(self, *args, **kwargs):
         # there are two childs
         # one main-color-selector (which is select hc)

@@ -1,28 +1,26 @@
-from kavya_components import LinearSelector
+from kavya_components import ColorSelector
 
-def on_click(*args):
-    pass
-
-linear_selector = LinearSelector(key="linear_selector", num_iter=range(0,8), on_click = on_click)
+import kavya as kv
 
 from py_tailwind_utils import *
 
-import kavya as kv
-from addict import Dict
-
-
+async def on_click(*args, **kwargs):
+    print("event handler for color select event ")
+    pass
+color_selector = ColorSelector(key="color_selector", on_click = on_click)
 
 app = kv.load_app()
 
 wp_endpoint = kv.create_endpoint(key="mutableDiv_SSRPage",
-                                 childs = [linear_selector
-                                           # hello_btn,
+                                 childs = [color_selector
+                                           #
                                            #       tb_1,
                                            #       tb_2
                                            
                                            ],
                                  skeleton_data_theme = "seafoam",
                                  rendering_type="MutableSSR",
-                                 ssr_bundle_dir = "ssr"
+                                 svelte_bundle_dir = "ssr"
                                  )
 kv.add_route("/", wp_endpoint)
+

@@ -11,7 +11,7 @@ from .linear_selector import LinearSelector
 from .color_shade_selector_using_linear_selector import ColorShadeSelector
 from .color_selector import ColorSelector
 from .stackd import StackD
-from .htmlcomponents import BiSplitView, Paginate
+from .htmlcomponents import EnumSelector, BiSplitView, Paginate
 from .dockbar import Dockbar
 from .component_mouseover_slideshow import SlideShow
 from .hierarchy_naviator import HierarchyNavigator_TF, HierarchyNavigator
