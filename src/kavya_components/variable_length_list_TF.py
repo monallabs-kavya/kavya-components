@@ -1,4 +1,5 @@
 import kavya as kv
+
 # from ofjustpy.MHC_types import (
 #     Label as MLabel,
 #     HCCMutable,
@@ -134,5 +135,5 @@ def TF(SlotType = MSlotBtn_HCType,
                              childs = self.slots,
                              **kwargs
                              )
-    return _VarListDiv
+    return assign_id(_VarListDiv)
 

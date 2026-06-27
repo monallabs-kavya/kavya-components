@@ -18,7 +18,7 @@ from kavya_components import VarLenghtList_TF
 # SlotBtnWithIcon_idgen = assign_id(SlotBtnWithIcon)
 app = kv.load_app()
 #VarLenghtList = VarLenghtList_TF(SlotType = SlotBtnWithIcon_idgen)
-VarLenghtList = assign_id(VarLenghtList_TF())
+VarLenghtList = VarLenghtList_TF()
 
 
 async def on_slot_clicked(dbref, msg, wp, request):

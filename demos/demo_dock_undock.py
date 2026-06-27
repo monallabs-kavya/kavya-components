@@ -3,14 +3,13 @@ drop down color not working in firefox
 """
 
 from py_tailwind_utils import *
-import ofjustpy as oj
+import kavya as kv
 from addict_tracking_changes import Dict
-import ofjustpy_components as ojx
-from ofjustpy_components.htmlcomponents import  BiSplitView, Paginate, Dockbar
+import kavya_components as kvx
 from py_tailwind_utils import space, y
 import macropy.activate
 import dummy_company_section_domain_components 
-app = oj.load_app()
+app = kv.load_app()
 def on_btn_click(dbref,msg):
     pass
 
@@ -33,8 +32,7 @@ info_boxes = dummy_company_section_domain_components.info_cards()
 # dockbar  = Dockbar([span1, span2, *info_boxes],
 #                    ["Item1", "Item2", "Item3", "Item4" ],
 #                    )
-
-dockbar = Dockbar(info_boxes,
+dockbar = kvx.Dockbar(info_boxes,
                    [
                       "Technology Solutions",
                       "Financial Services",
@@ -85,15 +83,16 @@ undock_btns_bar.childs.extend(dockbar.undock_btns.values())
 
 
 
-wp_endpoint = oj.create_endpoint(key="dock_undock",
+wp_endpoint = kv.create_endpoint(key="dock_undock",
                                     childs = [
                                               grid_usp
                                               ],
                                     title="Docking/Undocking",
-                                 head_html="""<script src="https://cdn.tailwindcss.com"></script>"""
+                                    rendering_type="MutableSSR",
+                                    svelte_bundle_dir="ssr"
                                     )
 
-oj.add_jproute("/", wp_endpoint)
+kv.add_route("/", wp_endpoint)
 
 
 
