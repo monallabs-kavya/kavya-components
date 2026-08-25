@@ -12,12 +12,13 @@ from kavya.type_factory.common_mixins import (HCTextMixin,
                                               TwStyMixin
                                                )
 
+
 from kavya.session_managment.uictx_id_assigner import assign_id
 from kavya.htmlcomponents import ui_styles
 from kavya.themes.ui_styles import sty
 from kavya.htmlcomponents.html_tag_mixins import (DivMixin,
                                                   ButtonMixin,
-                                                  SpanMixin
+                                                  SpanMixin, VueTypeMixin
                                                   )
 
 from py_tailwind_utils import *
@@ -133,7 +134,8 @@ _ChildSlotBtn = MutableHC_StubWrappedTypeGen("ChildSlotBtn",
                                              SpanMixin,
                                              mutableShellMixins=[TwStyMixin,
                                                                  HCTextMixin,
-                                                                 ValueMixin
+                                                                 ValueMixin,
+                                                                 VueTypeMixin
                                                                  ],
                                                    
                                              stytags_getter_func=get_childslotbtn_stytags
@@ -523,6 +525,7 @@ def slideshowbase_twsty_tags():
 HiNavBase = MutableDiv_StubWrappedTypeGen("HiNavBase",
                                                    DivMixin,
                                                    mutableShell_addonMixins = [HiNav_MutableShellMixin],
+                                                   staticCore_addonMixins= [VueTypeMixin],
                                                    
                                                    stytags_getter_func=slideshowbase_twsty_tags
                                                    )

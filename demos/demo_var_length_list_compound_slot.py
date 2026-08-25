@@ -100,7 +100,7 @@ async def on_add_item(dbref, msg, to_ms):
     ms = to_ms(varlenghtlist)
     print(ms)
     ms.hide_all_slots()
-    ms.update_child_panel(items)
+    ms.update_child_panel(items, items)
     pass
 
 add_item_btn =  oj.AD.Button(key="add_item_btn",

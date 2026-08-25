@@ -11,7 +11,8 @@ from kavya.type_factory.mutable_mixins import (ValueSharerMixin
 from kavya.type_factory.common_mixins import (HCTextMixin,
                                               TwStyMixin
                                                )
-
+from kavya.htmlcomponents.html_tag_mixins import (VueTypeMixin
+                                                  )
 from kavya.session_managment.uictx_id_assigner import assign_id
 from kavya.htmlcomponents import ui_styles
 from kavya.themes.ui_styles import sty
@@ -44,6 +45,7 @@ def stytags_getter_func():
 SlideShowBase = MutableDiv_StubWrappedTypeGen("SlideShowBase",
                                                    DivMixin,
                                                    mutableShell_addonMixins = [SlideShow_MutableShellMixin],
+                                                   staticCore_addonMixins=[VueTypeMixin],
                                                    
                                                    stytags_getter_func=stytags_getter_func
                                                    )

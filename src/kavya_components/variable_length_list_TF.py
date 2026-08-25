@@ -28,6 +28,11 @@ from kavya.htmlcomponents import html_tag_mixins as HTM
 from kavya.session_managment.uictx_id_assigner import assign_id, id_assigner
 from kavya.themes import ui_styles
 from py_tailwind_utils import noop, hidden
+from kavya.htmlcomponents.html_tag_mixins import (DivMixin,
+                                                  ButtonMixin,
+                                                  VueTypeMixin
+                                                  )
+
 class ValueMixin:
     attr_tracked_keys = []
     domDict_tracked_keys = []
@@ -92,6 +97,7 @@ def TF(SlotType = MSlotBtn_HCType,
     _StubWrappedStaticCore= MutableDiv_StubWrappedTypeGen("VarListDiv",
                                                 ContainerMixin,
                                                 stytags_getter_func = lambda m=ui_styles: m.sty.varlistdiv,
+                                                staticCore_addonMixins=[VueTypeMixin],
                                                 mutableShell_addonMixins=[VarListDiv_MutableShellMixin]
                                        )
 
@@ -135,5 +141,6 @@ def TF(SlotType = MSlotBtn_HCType,
                              childs = self.slots,
                              **kwargs
                              )
+            
     return assign_id(_VarListDiv)
 

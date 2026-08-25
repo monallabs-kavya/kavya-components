@@ -5,7 +5,7 @@ from kavya.type_factory.mutable_type_factory import (MutableDiv_StubWrappedTypeG
                                                      )
 
 from kavya.htmlcomponents import ui_styles
-from kavya.htmlcomponents.html_tag_mixins import (DivMixin,
+from kavya.htmlcomponents.html_tag_mixins import (DivMixin, VueTypeMixin,
                                                   )
 
 from py_tailwind_utils import *
@@ -82,7 +82,7 @@ def stytags_getter_func():
 _StackD = MutableDiv_StubWrappedTypeGen("StackD",
                                         DivMixin,
                                         mutableShell_addonMixins = [StackDMixin],
-                                        staticCore_addonMixins = [StackDSvelteSafelist],
+                                        staticCore_addonMixins = [StackDSvelteSafelist, VueTypeMixin],
                                         stytags_getter_func=stytags_getter_func
                                         )
 _StackD.svelte_twtags_safelist = [W/full, H/twmax, overflow.auto, ppos.absolute, lv.iv]

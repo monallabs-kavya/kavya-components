@@ -14,7 +14,7 @@ from kavya.type_factory.common_mixins import (TwStyMixin
 
 from kavya.htmlcomponents import ui_styles
 from kavya.htmlcomponents.html_tag_mixins import (DivMixin,
-                                                  ButtonMixin
+                                                  ButtonMixin, VueTypeMixin
                                                   )
 
 from py_tailwind_utils import *
@@ -42,6 +42,7 @@ def stytags_getter_func(ui_styles = ui_styles):
 LinearSelectorBase = MutableDiv_StubWrappedTypeGen("LinearSelector",
                                                    DivMixin,
                                                    mutableShell_addonMixins = [MutableShell_LinearSelectorMixin],
+                                                   staticCore_addonMixins=[VueTypeMixin],
                                                    
                                                    stytags_getter_func=stytags_getter_func
                                                    )
@@ -85,7 +86,7 @@ class SafelistMixin:
 Circle = assign_id(MutableHC_StubWrappedTypeGen("Circle",
                                                 ButtonMixin,
                                                 stytags_getter_func=lambda m=ui_styles: m.sty.circle,
-                                                staticCore_addonMixins = [SafelistMixin],
+                                                staticCore_addonMixins = [SafelistMixin, VueTypeMixin],
                                                 mutableShell_addonMixins = [ValueSharerMixin]
                                  )
                    )

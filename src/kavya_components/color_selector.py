@@ -20,6 +20,11 @@ from py_tailwind_utils.skui_tags import (primary,
                                          error
                                          
                                          )
+from kavya.htmlcomponents.html_tag_mixins import (DivMixin,
+                                                  ButtonMixin,
+                                                  VueTypeMixin
+                                                  )
+
 from py_tailwind_utils import *
 color_shades = [primary,
                  secondary,
@@ -110,6 +115,7 @@ def CS_event_prehook(on_event_callback):
 ColorSelectorBase = MutableDiv_StubWrappedTypeGen("ColorSelectorBase",
                                                   DivMixin,
                                                   mutableShell_addonMixins = [MutableShell_CSMixin],
+                                                  staticCore_addonMixins=[VueTypeMixin],
                                                   stytags_getter_func=stytags_getter_func
                                                   )
 

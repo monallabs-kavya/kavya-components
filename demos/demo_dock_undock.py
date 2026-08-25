@@ -96,3 +96,6 @@ kv.add_route("/", wp_endpoint)
 
 
 
+# from starlette.testclient import TestClient
+# with TestClient(app) as client:
+#     response = client.get('/')

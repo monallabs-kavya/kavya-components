@@ -15,7 +15,8 @@ from kavya.type_factory.common_mixins import (HCTextMixin,
 from kavya.session_managment.uictx_id_assigner import assign_id
 from kavya.htmlcomponents import ui_styles
 from kavya.htmlcomponents.html_tag_mixins import (DivMixin,
-                                                  ButtonMixin
+                                                  ButtonMixin,
+                                                  VueTypeMixin
                                                   )
 
 from py_tailwind_utils import *
@@ -85,7 +86,7 @@ class UndockButtonMixin:
 
 _UndockButton = MutableHC_StubWrappedTypeGen("UndockButton",
                                              ButtonMixin,
-                                             staticCoreMixins = [HCTextMixin],
+                                             staticCoreMixins = [HCTextMixin, VueTypeMixin],
                                              mutableShellMixins = [UndockButtonMixin,
                                                                    TwStyMixin],
                                              mutableShell_addonMixins = [ValueSharerMixin],
