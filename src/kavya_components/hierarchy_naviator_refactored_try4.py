@@ -1,26 +1,26 @@
-from ofjustpy.MHC_types import (
-    Label as MLabel,
-    HCCMutable,
-    Button as MButton,
-    HCCStatic,
-    StackH as MStackH,
-)
-import ofjustpy as oj
-from ofjustpy.htmlcomponents_impl import assign_id
-from ofjustpy.SHC_types import PassiveComponents as PC, ActiveComponents as AC
-from py_tailwind_utils import *
-from ofjustpy_engine import HC_Div_type_mixins as TR
-from ofjustpy_engine.HCType import HCType
-from ofjustpy.ui_styles import sty
-from ofjustpy import ui_styles
-from ofjustpy.Div_TF import gen_Div_type
+# from ofjustpy.MHC_types import (
+#     Label as MLabel,
+#     HCCMutable,
+#     Button as MButton,
+#     HCCStatic,
+#     StackH as MStackH,
+# )
+# import ofjustpy as oj
+# from ofjustpy.htmlcomponents_impl import assign_id
+# from ofjustpy.SHC_types import PassiveComponents as PC, ActiveComponents as AC
+# from py_tailwind_utils import *
+# from ofjustpy_engine import HC_Div_type_mixins as TR
+# from ofjustpy_engine.HCType import HCType
+# from ofjustpy.ui_styles import sty
+# from ofjustpy import ui_styles
+# from ofjustpy.Div_TF import gen_Div_type
 
 from functools import partial
 
 # require for arrow button which is special type of mutable
 # the text is mutable; but the twsty-tags remains the same
 
-from ofjustpy.HC_TF import gen_HC_type
+#from ofjustpy.HC_TF import gen_HC_type
 
 from abc import ABC, abstractmethod
 

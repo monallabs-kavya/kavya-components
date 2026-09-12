@@ -52,6 +52,14 @@ def info_cards():
                             
                                  ):
                     pass
+                with FontAwesomeIcon(label="faTrash", fa_group="solid",
+                                                           size="1x", 
+                                                           fixedWidth=True,
+                                                           mdi_label="cap",
+                                                           classes="w-5 h-5",
+                                   
+                                                           ):
+                   pass
             with Div():
                 with H2(classes='text-lg font-bold', text="Financial Services:"):
                     pass

@@ -123,7 +123,7 @@ def TF(SlotType = MSlotBtn_HCType,
                                        value=i,
 
 
-                                       extra_classes="hover:border-s-[3px] hover:border-gray-100 border-s-[3px]  border-s-pink-50/10",
+                                       #extra_classes="hover:border-s-[3px] hover:border-gray-100 border-s-[3px]  border-s-pink-50/10",
                                        **slot_event_handlers
 
 
