@@ -154,6 +154,7 @@ class HiNav_MutableShellMixin:
         self.breadcrumb_panel_ms = session_manager.target_of(self.staticCore.breadcrumb_panel.id)
         self.childslots_panel_ms = session_manager.target_of(self.staticCore.childslots_panel.id)
 
+
         # make the root open
         step_shell = self.breadcrumb_panel_ms.get_step_at_idx(1)
         step_shell.remove_twsty_tags(noop / hidden)  # root is always open
@@ -166,7 +167,6 @@ class HiNav_MutableShellMixin:
         repopulate the child panel when selected-path gets updated
         """
         self.childslots_panel_ms.hide_all_slots()
-        print("updating child panel for show_path = ", self.show_path)
         showitem = dget(self.staticCore.hierarchy, "/" + "/".join(self.show_path))
 
         self.childslots_panel_ms.update_child_panel(showitem)
@@ -175,7 +175,7 @@ class HiNav_MutableShellMixin:
 
     def fold(self, fold_idx):
         show_depth = self.show_depth
-        print("now folding from ", show_depth -1 , "down to ", fold_idx)
+
         for idx in range(show_depth-1, fold_idx, -1):
 
             stepi_shell = self.breadcrumb_panel_ms.get_step_at_idx(idx)
@@ -382,7 +382,8 @@ def TF(ChildSlot_T, Step_T):
             with kv.uictx("breadcrumb"):
                 self.steps = [Step_T(key=f"step_{idx}",
                                      value = idx+1,
-                                     on_click = on_step_click_eh 
+                                     on_click = on_step_click_eh ,
+                                     twsty_tags=[noop/hidden] # hide all steps 
                                      )
                               for idx in range (max_steps)
                               ]
@@ -444,7 +445,6 @@ def TF(ChildSlot_T, Step_T):
                 """
                 target_of = wp.session_manager.target_of
                 hinav_shell = target_of(hinav.id)
-                print("start fold at idx = ", dbref.value)
                 hinav_shell.fold(dbref.value)
                 pass
             
