@@ -154,12 +154,18 @@ class HiNav_MutableShellMixin:
         self.breadcrumb_panel_ms = session_manager.target_of(self.staticCore.breadcrumb_panel.id)
         self.childslots_panel_ms = session_manager.target_of(self.staticCore.childslots_panel.id)
 
-
+        self.aux_childslots_panel_ms = None
+        if self.staticCore.aux_childslots_panel :
+            print("aux childPanel found ")
+            self.aux_childslots_panel_ms = session_manager.target_of(self.staticCore.aux_childslots_panel.id)
+            print("aux childPanel found ", self.aux_childslots_panel_ms)
+            self.aux_childslots_panel_ms.register_hinav_breadcrumb_ms(self, self.breadcrumb_panel_ms)
         # make the root open
         step_shell = self.breadcrumb_panel_ms.get_step_at_idx(1)
         step_shell.remove_twsty_tags(noop / hidden)  # root is always open
         self.show_depth = 2
         self.update_child_panel()
+
         pass
 
     def update_child_panel(self):
@@ -170,7 +176,9 @@ class HiNav_MutableShellMixin:
         showitem = dget(self.staticCore.hierarchy, "/" + "/".join(self.show_path))
 
         self.childslots_panel_ms.update_child_panel(showitem)
-        
+        if self.aux_childslots_panel_ms:
+            self.aux_childslots_panel_ms.hide_all_slots()
+            self.aux_childslots_panel_ms.update_child_panel(showitem)
 
 
     def fold(self, fold_idx):
@@ -201,6 +209,7 @@ class HiNav_MutableShellMixin:
         self.breadcrumb_panel_ms.update_step_text(self.show_depth, child_label)
 
         self.show_depth += 1
+        print("unfold happened = ", self.show_depth)
         self.show_path.append(child_label)
         self.update_child_panel()
 
@@ -340,7 +349,7 @@ async def on_child_slot_click(dbref, msg, wp, request,  hinav=None):
     pass
 
 
-def TF(ChildSlot_T, Step_T):
+def TF(ChildSlot_T, Step_T, AuxChildPanel_T = None ):
     # ChildSlot_T should be of mutable type with text
     # Step_T should be of mutable type 
     class _ChildsPanel(__ChildsPanel):
@@ -429,6 +438,8 @@ def TF(ChildSlot_T, Step_T):
 
 
 
+            self.on_childslot_clicked_eh = on_childslot_clicked_eh
+
             self.childslots_panel = ChildsPanel(on_childslot_clicked_eh,
                                               max_slots=max_slots,
                                               key="childpanel", 
@@ -438,6 +449,18 @@ def TF(ChildSlot_T, Step_T):
                                               # on_child_slot_lockclick  = on_childslot_lockclick_event_handler
                                               
                                               )
+            self.aux_childslots_panel  = None 
+            if AuxChildPanel_T: 
+                self.aux_childslots_panel = AuxChildPanel_T(on_childslot_clicked_eh,
+                                              max_slots=max_slots,
+                                              key="auxchildpanel", 
+                                              # on_child_slot_mouseenter = on_childslot_mouseenter_event_handler,
+                                              # on_child_slot_mouseleave = on_childslot_mouseleave_event_handler,
+                                              # on_child_slot_dblclick = on_childslot_dblclick_event_handler,
+                                              # on_child_slot_lockclick  = on_childslot_lockclick_event_handler
+                                              
+                                              )
+                
             async def on_step_click_eh(dbref, msg, wp, request,  hinav=self):
                 """
                 marker on the breadcrumb trail is clicked.
