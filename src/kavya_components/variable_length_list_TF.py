@@ -117,7 +117,7 @@ def TF(SlotType = MSlotBtn_HCType,
                 slot_event_handlers = {}
 
             key = kwargs.get("key")
-            with kv.uictx(f"VL_{key}"):
+            with kv.UICtx(f"VL_{key}"):
                 self.slots = [SlotType(key=f"slot_{i}",
                                        text=str(i),
                                        value=i,

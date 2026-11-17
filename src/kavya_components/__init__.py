@@ -7,7 +7,8 @@ advanced components built using ofjustpy framework
 #                              #Dockbar
 #                              )
 #from .color_shade_selector import ColorShadeSelector
-from .linear_selector import LinearSelector
+from .linear_selector import SteppedSlider
+from .radiogroup import RadioGroup
 from .color_shade_selector_using_linear_selector import ColorShadeSelector
 from .color_selector import ColorSelector
 from .stackd import StackD

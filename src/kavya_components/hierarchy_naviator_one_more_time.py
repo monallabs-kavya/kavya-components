@@ -80,9 +80,9 @@ class ChildsPanel_MutableShellMixin(ChildsPanelInterface):
         for cs in self.get_child_slots():
             cs.add_twsty_tags(noop / hidden)
 
-    def update_child_panel(self, showitem):
+    def update_child_panel(self, childslot_labels):
         for cs, clabel in zip(self.get_child_slots(),
-                              filter(lambda x: x != "_cref", showitem.keys()),
+                              filter(lambda x: x != "_cref", childslot_labels),
                               ):
             cs.remove_twsty_tags(noop / hidden)
             cs.add_twsty_tags(db.f) # some bug about flex being removed if component is hidden 
@@ -156,9 +156,7 @@ class HiNav_MutableShellMixin:
 
         self.aux_childslots_panel_ms = None
         if self.staticCore.aux_childslots_panel :
-            print("aux childPanel found ")
             self.aux_childslots_panel_ms = session_manager.target_of(self.staticCore.aux_childslots_panel.id)
-            print("aux childPanel found ", self.aux_childslots_panel_ms)
             self.aux_childslots_panel_ms.register_hinav_breadcrumb_ms(self, self.breadcrumb_panel_ms)
         # make the root open
         step_shell = self.breadcrumb_panel_ms.get_step_at_idx(1)
@@ -173,12 +171,17 @@ class HiNav_MutableShellMixin:
         repopulate the child panel when selected-path gets updated
         """
         self.childslots_panel_ms.hide_all_slots()
-        showitem = dget(self.staticCore.hierarchy, "/" + "/".join(self.show_path))
-
-        self.childslots_panel_ms.update_child_panel(showitem)
+        #showitem = dget(self.staticCore.hierarchy, "/" + "/".join(self.show_path))
+        #showitem = dget(self.staticCore.hierarchy.component_hierarchy, "/" + "/".join(self.show_path))
+        #print("update_child_panel: for path = ", self.show_path)
+        #print("using dget = ", dget, " ", id(dget))
+        (parent_id, parent_node, child_labels) = self.staticCore.hierarchy.dget("/" + "/".join(self.show_path))
+        #self.staticCore.hierarchy.dget("/" + "/".join(self.show_path))
+        #child_labels = showitem.keys()
+        self.childslots_panel_ms.update_child_panel(child_labels)
         if self.aux_childslots_panel_ms:
             self.aux_childslots_panel_ms.hide_all_slots()
-            self.aux_childslots_panel_ms.update_child_panel(showitem)
+            self.aux_childslots_panel_ms.update_child_panel(child_labels)
 
 
     def fold(self, fold_idx):
@@ -209,7 +212,6 @@ class HiNav_MutableShellMixin:
         self.breadcrumb_panel_ms.update_step_text(self.show_depth, child_label)
 
         self.show_depth += 1
-        print("unfold happened = ", self.show_depth)
         self.show_path.append(child_label)
         self.update_child_panel()
 
@@ -218,19 +220,25 @@ class HiNav_MutableShellMixin:
     # these event handlers are added to child slot 
     async def stepdown_on_child_select(self, selected_child_dbref, msg, wp, request):
         selected_child_label = selected_child_dbref.text
-        dval = dget(
-            self.staticCore.hierarchy,
-            "/" + "/".join([*self.show_path, selected_child_label]),
-        )
-        if isinstance(dval, dict):
-            terminal_path = f"""{"/" +"/".join([*self.show_path, selected_child_label]) + "/_cref"}"""
-            self.unfold(selected_child_label)
-            await self.staticCore.callback_child_selected(terminal_path, msg)
-        else:
-            terminal_path = (
-                f"""{"/" +"/".join([*self.show_path, selected_child_label])}"""
-            )
-            await self.staticCore.callback_child_selected(terminal_path, msg)
+        # dval = dget(
+        #     self.staticCore.hierarchy,
+        #     "/" + "/".join([*self.show_path, selected_child_label]),
+        # )
+
+        # dval is now a list 
+        # dval = self.staticCore.hierarchy.dget(
+        #     "/" + "/".join([*self.show_path, selected_child_label]),
+        # )
+        #if isinstance(dval, dict):
+        #if dval: 
+        terminal_path = f"""{"/" +"/".join([*self.show_path, selected_child_label]) + "/_cref"}"""
+        self.unfold(selected_child_label)
+        await self.staticCore.callback_child_selected(terminal_path, msg)
+        # else:
+        #     terminal_path = (
+        #         f"""{"/" +"/".join([*self.show_path, selected_child_label])}"""
+        #     )
+        #     await self.staticCore.callback_child_selected(terminal_path, msg)
 
         pass
 
@@ -255,74 +263,86 @@ class HiNav_MutableShellMixin:
         selected_child_label = selected_child_dbref.text
 
         
-        dval = dget(
-            self.staticCore.hierarchy,
-            "/" + "/".join([*self.show_path, selected_child_label]),
-        )
+        # dval = self.staticCore.hierarchy.dget(
+        #     "/" + "/".join([*self.show_path, selected_child_label]),
+        # )
         # on mouseover simply invoke the callback but do not update the child panel
-        if isinstance(dval, dict):
-            terminal_path = f"""{"/" +"/".join([*self.show_path, selected_child_label]) + "/_cref"}"""
-            await self.staticCore.callback_childslot_mouseenter(terminal_path, msg)
-        else:
-            terminal_path = (
-                f"""{"/" +"/".join([*self.show_path, selected_child_label])}"""
-            )
-            await self.staticCore.callback_childslot_mouseenter(terminal_path, msg)
+        #if isinstance(dval, dict):
+        #if dval:
+        terminal_path = f"""{"/" +"/".join([*self.show_path, selected_child_label]) + "/_cref"}"""
+        await self.staticCore.callback_childslot_mouseenter(terminal_path, msg)
+        # else:
+        #     terminal_path = (
+        #         f"""{"/" +"/".join([*self.show_path, selected_child_label])}"""
+        #     )
+        #     await self.staticCore.callback_childslot_mouseenter(terminal_path, msg)
 
         pass
 
     async def update_ui_on_child_mouseleave(self, selected_child_dbref, msg, wp, request):
         selected_child_label = selected_child_dbref.text
-        dval = dget(
-            self.staticCore.hierarchy,
-            "/" + "/".join([*self.show_path, selected_child_label]),
-        )
+        # dval = self.staticCore.hierarchy.dget(
+        #     "/" + "/".join([*self.show_path, selected_child_label]),
+        # )
+        # dval = dget(
+        #     self.staticCore.hierarchy,
+        #     "/" + "/".join([*self.show_path, selected_child_label]),
+        # )
         # on mouseover simply invoke the callback but do not update the child panel
-        if isinstance(dval, dict):
-            terminal_path = f"""{"/" +"/".join([*self.show_path, selected_child_label]) + "/_cref"}"""
-            await self.staticCore.callback_childslot_mouseleave(terminal_path, msg)
-        else:
-            terminal_path = (
-                f"""{"/" +"/".join([*self.show_path, selected_child_label])}"""
-            )
-            await self.staticCore.callback_childslot_mouseleave(terminal_path, msg)
+        #if isinstance(dval, dict):
+        #if dval:
+        terminal_path = f"""{"/" +"/".join([*self.show_path, selected_child_label]) + "/_cref"}"""
+        await self.staticCore.callback_childslot_mouseleave(terminal_path, msg)
+        # else:
+        #     terminal_path = (
+        #         f"""{"/" +"/".join([*self.show_path, selected_child_label])}"""
+        #     )
+        #     await self.staticCore.callback_childslot_mouseleave(terminal_path, msg)
 
         pass
 
 
     async def update_ui_on_child_dblclick(self, selected_child_dbref, msg, wp, request):
         selected_child_label = selected_child_dbref.text
-        dval = dget(
-            self.staticCore.hierarchy,
-            "/" + "/".join([*self.show_path, selected_child_label]),
-        )
+        # dval = dget(
+        #     self.staticCore.hierarchy,
+        #     "/" + "/".join([*self.show_path, selected_child_label]),
+        # )
+        # dval = self.staticCore.hierarchy.dget(
+        #     "/" + "/".join([*self.show_path, selected_child_label]),
+        # )        
         # on mouseover simply invoke the callback but do not update the child panel
-        if isinstance(dval, dict):
-            terminal_path = f"""{"/" +"/".join([*self.show_path, selected_child_label]) + "/_cref"}"""
-            await self.staticCore.callback_childslot_dblclick(terminal_path, msg)
-        else:
-            terminal_path = (
-                f"""{"/" +"/".join([*self.show_path, selected_child_label])}"""
-            )
-            await self.staticCore.callback_childslot_dblclick(terminal_path, msg)
+        #if isinstance(dval, dict):
+        #if dval:
+        terminal_path = f"""{"/" +"/".join([*self.show_path, selected_child_label]) + "/_cref"}"""
+        await self.staticCore.callback_childslot_dblclick(terminal_path, msg)
+        # else:
+        #     terminal_path = (
+        #         f"""{"/" +"/".join([*self.show_path, selected_child_label])}"""
+        #     )
+        #     await self.staticCore.callback_childslot_dblclick(terminal_path, msg)
 
         pass
 
     async def update_ui_on_child_lockclick(self, selected_child_dbref, msg, wp, request):
         selected_child_label = selected_child_dbref.text
-        dval = dget(
-            self.staticCore.hierarchy,
-            "/" + "/".join([*self.show_path, selected_child_label]),
-        )
+        # dval = dget(
+        #     self.staticCore.hierarchy,
+        #     "/" + "/".join([*self.show_path, selected_child_label]),
+        # )
+        # dval = self.staticCore.hierarchy.dget(
+        #     "/" + "/".join([*self.show_path, selected_child_label]),
+        # )
         # on mouseover simply invoke the callback but do not update the child panel
-        if isinstance(dval, dict):
-            terminal_path = f"""{"/" +"/".join([*self.show_path, selected_child_label]) + "/_cref"}"""
-            await self.staticCore.callback_childslot_lockclick(terminal_path, msg)
-        else:
-            terminal_path = (
-                f"""{"/" +"/".join([*self.show_path, selected_child_label])}"""
-            )
-            await self.staticCore.callback_childslot_lockclick(terminal_path, msg)
+        #if isinstance(dval, dict):
+        #if dval:
+        terminal_path = f"""{"/" +"/".join([*self.show_path, selected_child_label]) + "/_cref"}"""
+        await self.staticCore.callback_childslot_lockclick(terminal_path, msg)
+        # else:
+        #     terminal_path = (
+        #         f"""{"/" +"/".join([*self.show_path, selected_child_label])}"""
+        #     )
+        #     await self.staticCore.callback_childslot_lockclick(terminal_path, msg)
 
         pass
     
@@ -363,11 +383,12 @@ def TF(ChildSlot_T, Step_T, AuxChildPanel_T = None ):
                      on_child_slot_dblclick = None,
                      **kwargs
                      ):
-            with kv.uictx("childspanel"):
+            with kv.UICtx("childspanel"):
                 self.childslots = [
                     ChildSlot_T(key=f"slot_{i}",
                                 text=str(i),
                                 value=i,
+                                idx=i,
                                 on_click = on_child_slot_clicked
                                 )
                     for i in range(max_slots)
@@ -388,7 +409,7 @@ def TF(ChildSlot_T, Step_T, AuxChildPanel_T = None ):
     ChildsPanel = assign_id(_ChildsPanel)
     class _BreadcrumbPanel(__BreadcrumbPanel):
         def __init__(self, max_steps, root_step_hc , on_step_click_eh, **kwargs):
-            with kv.uictx("breadcrumb"):
+            with kv.UICtx("breadcrumb"):
                 self.steps = [Step_T(key=f"step_{idx}",
                                      value = idx+1,
                                      on_click = on_step_click_eh ,
@@ -418,7 +439,8 @@ def TF(ChildSlot_T, Step_T, AuxChildPanel_T = None ):
             """
             callback_child_selected: notify caller when a child/member of a node in the hierarchy is selected
             TODO: need a more general way to handle any callback.
-            
+
+            interface for hierarchy 
             """
             # TODO: Don't use MButton; use custom button type where both twsty and text is mutable
             self.max_steps = max_steps
