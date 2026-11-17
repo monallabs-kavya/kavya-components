@@ -102,12 +102,15 @@ class Dockbar:
                  dock_labels,
                  *args,
                  wdiv_type=kv.HS.Div,
+                 dock_on_load=False,
                  **kwargs
                  ):
         """
         assuming that the item being docked are static items.
         If they are Mutable then use general mutable Mutable.Div
         for wdiv_type
+        dock_on_load: items by default is undocked , if dock_on_load then items will be docked
+        dock_on_load is not fully implemented as now 
         """
         undock_btn_sty = kwargs.get(
             "undock_btn_sty",
@@ -129,17 +132,21 @@ class Dockbar:
         self.wrapped_components = {}
         self.undock_btns = {}
         # partial
-        dockit_handler = partial(on_dock_click, dockbar=self)
-        dockit_handler.svelte_twtags_safelist =  [noop/hidden]
+        self.dockit_handler = partial(on_dock_click, dockbar=self)
+        self.dockit_handler.svelte_twtags_safelist =  [noop/hidden]
         undockit_handler = lambda *args, dockbar=self: on_undock_click(
             *args, dockbar=dockbar
         )
+        disabled_kv = {}
+        if not dock_on_load:
+            disabled_kv = {'disabled': True}
+            
         for idx, (di, dock_label) in enumerate(zip(dockable_items, dock_labels)):
             key = str(idx)
             undock_btn = UndockButton(
                 key=f"undockbtn_{key}",
                 text=dock_label,
-                disabled=True,
+                **disabled_kv, 
                 value=key,
                 twsty_tags=undock_btn_sty,
                 on_click=undockit_handler,
@@ -156,7 +163,7 @@ class Dockbar:
                 dock_btn = kv.AD.Button(key=f"dock_{key}",
                                         twsty_tags=[W/3, H/1, bg/rose/500, top / 1, right / 1, ppos.absolute],
                                         value=key,
-                                        on_click=dockit_handler)
+                                        on_click=self.dockit_handler)
                 
             wrapped_component = wdiv_type(
                 key=f"wrap_{key}", childs=[di, dock_btn], twsty_tags=[ppos.relative]
@@ -165,5 +172,18 @@ class Dockbar:
             self.undock_btns[key] = undock_btn
             self.wrapped_components[key] = wrapped_component
 
+\
 
+            pass
+        pass
+    async def dock_all(self, wp):
 
+        for wrapped_component in self.wrapped_components.values():
+            # wrapped_component has 2 childs
+            # the item (child 0) and the dock_btn (child 1)
+            print(type(wrapped_component))
+            dock_btn = wrapped_component.childs[1]
+            dock_btn_ms = wp.session_manager.target_of(dock_btn.id)
+            await self.dockit_handler(dock_btn_ms, None, wp, None)
+            pass
+        pass
