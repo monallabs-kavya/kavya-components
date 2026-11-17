@@ -9,7 +9,7 @@ from kavya.htmlcomponents.html_tag_mixins import (DivMixin,
                                                   )
 from kavya.session_managment.uictx_id_assigner import assign_id
 from .color_shade_selector_using_linear_selector import ColorShadeSelector
-from .linear_selector import LinearSelector
+from .linear_selector import SteppedSlider
 
 from py_tailwind_utils.skui_tags import (primary,
                                          secondary,
@@ -139,7 +139,7 @@ class _ColorSelector(ColorSelectorBase):
                 # )                    
             )
 
-            self.scs = LinearSelector(key="scs",
+            self.scs = SteppedSlider(key="scs",
                                       num_iter=range(1, 11),
                                       on_click=partial(on_scs_click, cs_core=self)
                                       )

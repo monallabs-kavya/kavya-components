@@ -1,7 +1,7 @@
 
 from typing import List, AnyStr, Callable, Any
 from .stackd import StackD
-from .linear_selector import LinearSelector
+from .linear_selector import SteppedSlider
 import kavya as kv
 from py_tailwind_utils import (
     mr,
@@ -142,7 +142,7 @@ def Paginate(
 
         pass
 
-    page_selector = kv.HM.Halign(LinearSelector(
+    page_selector = kv.HM.Halign(SteppedSlider(
                                      key=f"{key}_selector",
                                      num_iter=range(len(page_containers)),
                                      on_click=on_page_select,
